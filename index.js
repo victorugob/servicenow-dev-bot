@@ -1,9 +1,9 @@
-const userInfo = require('dotenv').config()
+const { userInfo } = require('dotenv/config');
 const puppeteer = require('puppeteer');
-
-
 const myInstance = process.env.DEVINST;
 const instance = "https:" + myInstance + ".service-now.com/login";
+
+const ChromeLauncher = require('chrome-launcher');
 
 function delay(time) {
   return new Promise(function(resolve) {
@@ -12,7 +12,10 @@ function delay(time) {
 }
 
 (async () => {
-  const browser = await puppeteer.launch(); 
+  const browser = await puppeteer.launch({
+    headless: false,
+    executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+  }); 
   
 
   /* Use o código abaixo dentro de  .launch() para que abra a aba para ver o processo
@@ -32,6 +35,9 @@ function delay(time) {
   if(await (await page.$$('.instance-hibernating-page')).length > 0) {
     console.log('Instance is sleeping, Bot will redirect and wake your stance')
     await page.goto('https://developer.service-now.com/login')
+    if(page.url('https://developer.servicenow.com/dev.do#!/home')){
+      await page.goto('https://signon.service-now.com/ssologin.do?RelayState=%252Fapp%252Fservicenow_ud%252Fexks6phcbx6R8qjln0x7%252Fsso%252Fsaml%253FRelayState%253Dhttps%25253A%25252F%25252Fdeveloper.servicenow.com%25252Fdev.do%252523%252521%25252Fhome&redirectUri=&email=')
+    }
     await page.type('#username', process.env.USEREMAIL)
     await page.click('#usernameSubmitButton') 
     await delay(2000)
