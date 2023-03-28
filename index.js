@@ -5,6 +5,8 @@ const instance = "https:" + myInstance + ".service-now.com/login";
 
 const ChromeLauncher = require('chrome-launcher');
 
+//
+
 function delay(time) {
   return new Promise(function(resolve) {
     setTimeout(resolve, time)
